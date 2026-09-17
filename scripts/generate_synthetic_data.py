@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Generate synthetic player / session / purchase data for the CoD retention case study.
-SYNTHETIC ONLY — not affiliated with Activision, Beenox, or Call of Duty.
+SYNTHETIC ONLY: not affiliated with Activision, Beenox, or Call of Duty.
 """
 import csv, json, random
 from datetime import datetime, timedelta, timezone
