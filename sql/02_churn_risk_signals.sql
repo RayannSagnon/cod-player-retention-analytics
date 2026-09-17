@@ -1,5 +1,5 @@
 -- Early signals associated with churn by D7
--- "Churned" here = no session on days 1–7 after install.
+-- "Churned" here = no session on days 1-7 after install.
 
 WITH flags AS (
   SELECT
