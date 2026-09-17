@@ -1,84 +1,32 @@
-# Call of Duty — Player Retention Analytics (Case Study)
+# Dashboard: Rétention joueurs CoD
 
-**Portfolio case study** for product analytics / business intelligence roles (e.g. studio live-ops & player insights).
+> **Données synthétiques uniquement.** Non affilié à Activision, Beenox, Microsoft Gaming ou *Call of Duty*.
 
-> **Synthetic data only.** Generated for demonstration. **Not affiliated with** Activision, Beenox, Microsoft Gaming, or *Call of Duty*. No real player telemetry.
+## Visuels portfolio (Python / matplotlib)
 
-## Why this exists
+Power BI Desktop n’est **pas disponible** sur la machine de build (Linux) ni sur le laptop Windows actuel. Les captures portfolio sont donc générées avec **pandas + matplotlib**: mêmes métriques que l’analyse SQL (`sql/01`-`04`), layout type BI (cartes + graphiques, thème sombre).
 
-Studios running live games need analysts who can turn session data into **retention insights** and **product recommendations**. This project shows that loop end-to-end:
-
-1. Define retention questions (D1 / D7 / D30)
-2. Model a realistic synthetic dataset
-3. SQL analysis
-4. Dashboard (Power BI)
-5. Three concrete product recommendations
-
-Built by [Rayann Sagnon](https://rayannsagnon.com) — product-minded builder, Electrical Engineering & Systems @ University of Ottawa.
-
-## Status
-
-| Piece | Status |
-|-------|--------|
-| Synthetic dataset + generator | Done |
-| Schema docs | Done |
-| Starter SQL | Done |
-| Power BI dashboard | To do (see `dashboard/`) |
-| Product recommendations write-up | Template ready (`docs/product_recommendations_template.md`) |
-
-## Dataset (quick facts)
-
-See `data/meta.json` after generation. Default run:
-
-- ~5,000 players
-- ~100k+ sessions over ~60 days post-install
-- Optional purchases for a spender segment
-
-Regenerate:
+### Régénérer les PNG
 
 ```bash
-python3 scripts/generate_synthetic_data.py
+python3 -m venv .venv
+.venv/bin/pip install pandas matplotlib
+.venv/bin/python scripts/build_dashboard_figures.py
 ```
 
-## Schema
+Sortie : `docs/screenshots/01_retention_overview.png`, `02_risk_segments.png`, `03_spender_lens.png`.
 
-See [`docs/schema.md`](docs/schema.md).
+### Pages
 
-## SQL
+1. **Rétention**: cartes D1/D7/D30 ; barres groupées par plateforme ; tendance cohorte (semaine d’install)
+2. **Risques**: segments early-risk vs D7 (highlight `short_first_day`) ; mix de modes retenus vs churnés ; spender vs rétention
+3. **Lentille spender** *(optionnel)*: détail D1/D7/D30 spender vs non-spender
 
-| File | Question |
-|------|----------|
-| `sql/01_retention_cohort.sql` | D1/D7/D30 by cohort × platform |
-| `sql/02_churn_risk_signals.sql` | Early risk segments vs D7 |
-| `sql/03_mode_engagement.sql` | Mode mix retained vs churned |
-| `sql/04_spender_vs_retention.sql` | Spender flag vs retention |
+## Power BI plus tard
 
-Load CSVs into SQLite / DuckDB / BigQuery / Power BI as you prefer. Some date functions are SQLite-oriented — adapt if needed.
+Si tu installes Power BI Desktop, suis le brief 2 pages : [`docs/powerbi_build_brief.md`](../docs/powerbi_build_brief.md) (import CSV, relations, mesures DAX, checklist screenshots). Le fichier `.pbix` reste gitignoré (`*.pbix`).
 
-### Quick SQLite load example
+## Import & modèle (référence PBI)
 
-```bash
-sqlite3 analysis.db <<'SQL'
-.mode csv
-.import data/players.csv players
-.import data/sessions.csv sessions
-.import data/purchases.csv purchases
-SQL
-sqlite3 analysis.db < sql/04_spender_vs_retention.sql
-```
-
-## Dashboard
-
-See [`dashboard/README.md`](dashboard/README.md).
-
-## Product recommendations
-
-Draft in [`docs/product_recommendations_template.md`](docs/product_recommendations_template.md). Target: **3 actions**, each with evidence + success metric.
-
-## Stack
-
-Python 3 · CSV · SQL · Power BI (planned)
-
-## License
-
-MIT for code/docs. Dataset is synthetic fiction for education/portfolio use only.
+- `players.player_id` **1→∞** `sessions.player_id`
+- `players.player_id` **1→∞** `purchases.player_id`
