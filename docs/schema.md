@@ -9,7 +9,7 @@
 | install_date | date | First install / acquisition date |
 | platform | text | PC / PS5 / Xbox |
 | region | text | NA-East / NA-West / EU / LATAM |
-| skill_factor | float | Synthetic skill proxy (~0.2–2.0) |
+| skill_factor | float | Synthetic skill proxy (~0.2-2.0) |
 | spender | 0/1 | Flag for higher monetization propensity |
 
 ## `sessions.csv`
